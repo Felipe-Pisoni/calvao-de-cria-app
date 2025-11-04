@@ -1,0 +1,7 @@
+{
+  "name": "calvao-de-cria-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
