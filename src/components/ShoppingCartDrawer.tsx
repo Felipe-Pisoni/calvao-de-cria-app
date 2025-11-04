@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   IonModal,
   IonHeader,
@@ -10,6 +10,7 @@ import {
   IonIcon,
   IonFooter,
   IonText,
+  IonImg,
 } from "@ionic/react";
 import {
   close,
@@ -78,7 +79,15 @@ export const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
           <div className="flex flex-col items-center justify-center h-full text-center">
             <IonText color="medium">
               <h3>Seu carrinho está vazio</h3>
-              <p>Adicione produtos para continuar</p>
+              <IonText>
+                {isAuthenticated ? (
+                  "Adicione produtos para continuar"
+                ) : (
+                  <>
+                    Faça <Link onClick={onClose} to="/auth/login">login</Link> para continuar
+                  </>
+                )}
+              </IonText>
             </IonText>
           </div>
         ) : (
@@ -147,7 +156,7 @@ const ProductRowItem: React.FC<ProductRowItemProps> = ({
 
   return (
     <div className="flex items-start gap-3 pb-4 border-b border-gray-200">
-      <img
+      <IonImg
         src={item.mainImageUrl}
         alt={item.name}
         className="w-20 h-20 object-contain rounded-md"
