@@ -31,10 +31,12 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./theme/custom.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
-import { ProductDetailsPage } from "./components/pages/ProductDetails";
-import { Home, HomeContent } from "./components/pages/Home";
+import { ProductDetailsPage } from "./pages/ProductDetails";
+import ProductsList from "./pages/ProductsList";
+import { LoginPage } from "./pages/Login";
 
 setupIonicReact();
 
@@ -45,8 +47,10 @@ const App: React.FC = () => (
         <IonReactRouter>
           <IonRouterOutlet>
             {/* Suas rotas principais vão aqui */}
-            <Route path="/" component={Home} exact={true} />
-            <Route path="/product/:id" component={ProductDetailsPage} />
+            <Route path="/" component={ProductsList} exact={true} />
+            <Route path="/product/:id" component={ProductDetailsPage} exact={true} />
+            <Route path="/auth/login" component={LoginPage} exact={true} />
+            {/* <Route path="/product/:id" component={ProductDetailsPage} /> */}
             {/* ...outras rotas... */}
 
             {/* Você pode ter que repensar os "Layouts" 

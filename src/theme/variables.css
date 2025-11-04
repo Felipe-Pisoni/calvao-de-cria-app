@@ -1,0 +1,139 @@
+/* Ionic Variables and Theming. */
+/* This is where you define your app's global colors and styles */
+
+@theme {
+  --color-primary: #11b687;
+  --color-background: #efefef;
+  --color-secondary: #c69879;
+  --color-itemsBackground: #ffffff;
+  --color-text1: #1d1d1b;
+  --color-textSpecial: #ffcc00;
+  --color-textSecondary: #888888;
+}
+
+:root {
+  /* ===== CORES PRINCIPAIS ===== */
+  --color-primary: #11b687;
+  --color-secondary: #c69879;
+  --color-background: #efefef;
+  --color-itemsBackground: #ffffff;
+
+  /* ===== CORES DE TEXTO ===== */
+  --color-text1: #1d1d1b;
+  --color-textPrimary: #1d1d1b;
+  --color-textSpecial: #ffcc00;
+  --color-textSecondary: #888888;
+
+  /* ===== ALIASES PARA COMPATIBILIDADE ===== */
+  --color-items-bg: #ffffff;
+  --color-itemsBg: #ffffff;
+
+  /** Cores primárias do projeto **/
+  --ion-color-primary: #11b687;
+  --ion-color-primary-rgb: 17, 182, 135;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0fa077;
+  --ion-color-primary-tint: #29bd92;
+
+  /** Cores secundárias **/
+  --ion-color-secondary: #c69879;
+  --ion-color-secondary-rgb: 198, 152, 121;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #ae866a;
+  --ion-color-secondary-tint: #cca386;
+
+  /** Cor de sucesso **/
+  --ion-color-success: #11b687;
+  --ion-color-success-rgb: 17, 182, 135;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #0fa077;
+  --ion-color-success-tint: #29bd92;
+
+  /** Cor de aviso **/
+  --ion-color-warning: #ffcc00;
+  --ion-color-warning-rgb: 255, 204, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0b300;
+  --ion-color-warning-tint: #ffd11a;
+
+  /** Cor de perigo **/
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  /** Cores escuras **/
+  --ion-color-dark: #1d1d1b;
+  --ion-color-dark-rgb: 29, 29, 27;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1a1a18;
+  --ion-color-dark-tint: #343432;
+
+  /** Cores médias **/
+  --ion-color-medium: #888888;
+  --ion-color-medium-rgb: 136, 136, 136;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #787878;
+  --ion-color-medium-tint: #949494;
+
+  /** Cores claras **/
+  --ion-color-light: #efefef;
+  --ion-color-light-rgb: 239, 239, 239;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d2d2d2;
+  --ion-color-light-tint: #f1f1f1;
+
+  /** Cor de fundo global **/
+  --ion-background-color: #efefef;
+  --ion-background-color-rgb: 239, 239, 239;
+
+  /** Cor de texto global **/
+  --ion-text-color: #1d1d1b;
+  --ion-text-color-rgb: 29, 29, 27;
+
+  /** Cor de fundo dos cards/itens **/
+  --ion-card-background: #ffffff;
+
+  /** Cores dos inputs/searchbar **/
+  --ion-item-background: #ffffff;
+  --ion-item-color: #1d1d1b;
+
+  /** Cor de fundo do toolbar **/
+  --ion-toolbar-background: #11b687;
+  --ion-toolbar-color: #ffffff;
+}
+
+/* Modo escuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  /*
+   * Dark Colors
+   * -------------------------------------------
+   * Descomente se quiser suporte a modo escuro
+   */
+
+  /* body {
+    --ion-color-primary: #11B687;
+    --ion-color-primary-rgb: 17, 182, 135;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #0fa077;
+    --ion-color-primary-tint: #29bd92;
+
+    --ion-background-color: #1a1a1a;
+    --ion-background-color-rgb: 26, 26, 26;
+
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+
+    --ion-card-background: #2a2a2a;
+  } */
+}

@@ -1,18 +1,38 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from ".";
+import { useHistory } from "react-router-dom";
+import {
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonFooter,
+  IonText,
+} from "@ionic/react";
+import {
+  close,
+  trashOutline,
+  addOutline,
+  removeOutline,
+  add,
+  remove,
+} from "ionicons/icons";
 import type { CartItem } from "../types";
-import { XIcon } from "@phosphor-icons/react";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 
-export const ShoppingCartDrawer = ({
-  isOpen,
-  onClose,
-}: {
+interface ShoppingCartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+export const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
+  isOpen,
+  onClose,
 }) => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const { cart, updateCartItem, removeFromCart } = useCart();
   const { isAuthenticated } = useAuth();
 
@@ -27,72 +47,75 @@ export const ShoppingCartDrawer = ({
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      navigate("/auth/login");
+      history.push("/auth/login");
       onClose();
       return;
     }
-    navigate("/checkout");
+    history.push("/checkout");
     onClose();
   };
 
   return (
-    <div
-      className={`fixed inset-0 z-30 transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+    <IonModal
+      isOpen={isOpen}
+      onDidDismiss={onClose}
+      breakpoints={[0, 0.5, 0.75, 1]}
+      initialBreakpoint={1}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-      {/* Drawer Content */}
-      <div
-        className={`absolute top-0 right-0 h-full bg-itemsBackground w-full max-w-sm shadow-xl transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          <div className="flex items-center p-4">
-            <button
-              onClick={onClose}
-              className="flex items-center gap-2 text-text1 font-semibold cursor-pointer"
-            >
-              {/* </> */}
-              <span>Voltar</span>
-            </button>
+      <IonHeader>
+        <IonToolbar className="toolbar-primary">
+          <IonTitle className="mx-4">Carrinho</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onClose}>
+              <IonIcon slot="icon-only" icon={close} />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="ion-padding">
+        {cartItems.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <IonText color="medium">
+              <h3>Seu carrinho está vazio</h3>
+              <p>Adicione produtos para continuar</p>
+            </IonText>
           </div>
-          <div className="divide-y divide-textSecondary flex-grow bg-background overflow-y-auto p-4">
-            {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-textSecondary">
-                <p className="text-lg mb-2">Seu carrinho está vazio</p>
-                <p className="text-sm">Adicione produtos para continuar</p>
-              </div>
-            ) : (
-              cartItems.map((item: CartItem) => (
-                <ProductRowItem
-                  key={item.productId}
-                  item={item}
-                  onUpdateQuantity={updateCartItem}
-                  onRemove={removeFromCart}
-                />
-              ))
-            )}
+        ) : (
+          <div className="space-y-4">
+            {cartItems.map((item: CartItem) => (
+              <ProductRowItem
+                key={item.productId}
+                item={item}
+                onUpdateQuantity={updateCartItem}
+                onRemove={removeFromCart}
+              />
+            ))}
           </div>
-          <div className="p-4 bg-white space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-xl font-bold text-text1">Total</span>
-              <span className="text-xl font-bold text-primary">
-                R$ {total?.toFixed(2).replace(".", ",")}
-              </span>
-            </div>
-            <Button 
-              onClick={handleCheckout} 
-              disabled={cartItems.length === 0}
-            >
-              Finalizar
-            </Button>
-          </div>
+        )}
+      </IonContent>
+
+      <IonFooter className="pb-8 bg-white px-4 space-y-4">
+        <div className="flex justify-between items-center">
+          <IonText>
+            <h2 className="text-xl font-bold">Total</h2>
+          </IonText>
+          <IonText className="text-primary">
+            <h2 className="text-xl font-bold">
+              R$ {total?.toFixed(2).replace(".", ",")}
+            </h2>
+          </IonText>
         </div>
-      </div>
-    </div>
+        <IonButton
+          expand="block"
+          color="primary"
+          onClick={handleCheckout}
+          disabled={cartItems.length === 0}
+        >
+          Finalizar
+        </IonButton>
+      </IonFooter>
+    </IonModal>
   );
 };
 
@@ -105,11 +128,11 @@ interface ProductRowItemProps {
   onRemove: (productId: string) => Promise<void>;
 }
 
-export const ProductRowItem = ({
+const ProductRowItem: React.FC<ProductRowItemProps> = ({
   item,
   onUpdateQuantity,
   onRemove,
-}: ProductRowItemProps) => {
+}) => {
   const handleQuantityChange = async (newQuantity: number) => {
     if (newQuantity <= 0) {
       await onRemove(item.productId);
@@ -123,19 +146,26 @@ export const ProductRowItem = ({
   };
 
   return (
-    <div className="text-text1 flex items-center gap-4 mb-4 pb-4">
+    <div className="flex items-start gap-3 pb-4 border-b border-gray-200">
       <img
         src={item.mainImageUrl}
         alt={item.name}
-        className="w-16 h-16 object-contain rounded-md"
+        className="w-20 h-20 object-contain rounded-md"
       />
 
-      <div className="flex-grow flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-sm font-medium leading-tight">{item.name}</h3>
-          <button className="rounded-full" onClick={handleRemove}>
-            <XIcon />
-          </button>
+      <div className="grow flex flex-col gap-2">
+        <div className="flex justify-between items-start">
+          <h3 className="text-sm font-medium leading-tight pr-2">
+            {item.name}
+          </h3>
+          <IonButton
+            fill="clear"
+            size="small"
+            onClick={handleRemove}
+            className="m-0 h-8"
+          >
+            <IonIcon slot="icon-only" icon={trashOutline} color="danger" />
+          </IonButton>
         </div>
 
         <div className="flex items-center justify-between">
@@ -143,20 +173,23 @@ export const ProductRowItem = ({
             quantity={item.quantity}
             onQuantityChange={handleQuantityChange}
           />
-          <span className="text-lg font-bold text-primary">
-            R$ {item.totalItemPrice?.toFixed(2).replace(".", ",")}
-          </span>
+          <IonText color="primary">
+            <span className="text-lg font-bold">
+              R$ {item.totalItemPrice?.toFixed(2).replace(".", ",")}
+            </span>
+          </IonText>
         </div>
       </div>
     </div>
   );
 };
+
 interface CounterProps {
   quantity: number;
   onQuantityChange: (newQuantity: number) => void;
 }
 
-const Counter = ({ quantity, onQuantityChange }: CounterProps) => {
+const Counter: React.FC<CounterProps> = ({ quantity, onQuantityChange }) => {
   const handleDecrease = () => {
     onQuantityChange(quantity - 1);
   };
@@ -166,22 +199,27 @@ const Counter = ({ quantity, onQuantityChange }: CounterProps) => {
   };
 
   return (
-    <div className="flex items-center border w-24 justify-center border-text1 rounded px-1 bg-white">
-      <button
+    <div className="flex items-center gap-2 ">
+      <IonButton
+        fill="clear"
+        // size="small"
+        className="text-text1"
         onClick={handleDecrease}
-        className="h-5 w-5 rounded-full hover:bg-background transition-color flex items-center justify-center"
+        disabled={quantity <= 1}
       >
-        −
-      </button>
-      <span className="px-3 py-1 text-sm font-medium min-w-[2rem] text-center">
+        <IonIcon slot="icon-only" icon={remove} />
+      </IonButton>
+      <IonText className="px-3 font-medium min-w-8 text-center text-text1">
         {quantity}
-      </span>
-      <button
+      </IonText>
+      <IonButton
+        className="text-text1"
+        fill="clear"
+        // size="small"
         onClick={handleIncrease}
-        className="h-5 w-5 rounded-full hover:bg-background transition-color flex items-center justify-center"
       >
-        +
-      </button>
+        <IonIcon slot="icon-only" icon={add} />
+      </IonButton>
     </div>
   );
 };

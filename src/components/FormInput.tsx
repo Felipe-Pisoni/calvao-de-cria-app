@@ -19,7 +19,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           <input
             ref={ref}
             {...props}
-            className={`p-2 outline-none focus-within:border-secondary border-b border-primary ${
+            className={`bg-white text-text1 p-2 outline-none focus-within:border-secondary border-b border-primary placeholder:text-textSecondary ${
               error ? "border-red-500" : ""
             } ${className || ""}`}
           />

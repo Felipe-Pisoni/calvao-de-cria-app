@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import type { Product } from "../types";
 import { Button } from "./Button";
 import { useCart } from "../contexts/CartContext";
@@ -9,7 +9,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const { addToCart } = useCart();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -18,24 +18,25 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     try {
       await addToCart({
         productId: product.id,
-        quantity: 1
+        quantity: 1,
       });
     } catch (error) {
-      console.error('Erro ao adicionar ao carrinho:', error);
+      console.error("Erro ao adicionar ao carrinho:", error);
     } finally {
       setIsAddingToCart(false);
     }
   };
 
-  const currentPrice = product.isPromotionActive && product.promotionalPrice 
-    ? product.promotionalPrice 
-    : product.price;
+  const currentPrice =
+    product.isPromotionActive && product.promotionalPrice
+      ? product.promotionalPrice
+      : product.price;
 
   return (
     <div className="bg-white flex flex-col p-4 rounded-lg shadow-md gap-2">
-      <div 
+      <div
         className="w-full h-40 flex items-center justify-center overflow-hidden self-center cursor-pointer"
-        onClick={() => navigate(`/product/${product.id}`)}
+        onClick={() => history.push(`/product/${product.id}`)}
       >
         <img
           src={product.mainImage}
@@ -43,21 +44,21 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           className="max-h-full max-w-full object-contain hover:scale-105 transition-transform"
         />
       </div>
-      <span 
+      <span
         className="text-sm text-text1 cursor-pointer hover:text-primary transition-colors"
-        onClick={() => navigate(`/product/${product.id}`)}
+        onClick={() => history.push(`/product/${product.id}`)}
       >
         {product.name}
       </span>
-      
+
       {product.isPromotionActive && product.promotionalPrice && (
         <span className="text-xs font-bold text-textSecondary line-through">
           R$ {product.price.toFixed(2).replace(".", ",")}
         </span>
       )}
-      
+
       <div className="flex gap-2 items-center font-bold">
-        <span className="text-primary text-xl">
+        <span className="text-xl text-primary">
           R$ {currentPrice.toFixed(2).replace(".", ",")}
         </span>
         {product.isPromotionActive && product.discountPercentage && (
@@ -66,21 +67,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         )}
       </div>
-      
-      <div className="mt-2 space-y-2">
-        <Button 
-          onClick={() => navigate(`/product/${product.id}`)} 
-          variant="outline"
-        >
-          Ver Detalhes
-        </Button>
-        <Button 
-          onClick={handleAddToCart}
-          disabled={isAddingToCart || product.stockQuantity === 0}
-        >
-          {isAddingToCart ? 'Adicionando...' : 
-           product.stockQuantity === 0 ? 'Fora de estoque' : 'Adicionar ao carrinho'}
-        </Button>
+
+      <div className="mt-2 space-y-2 ">
+        <Button href={`/product/${product.id}`}>Ver Detalhes</Button>
       </div>
     </div>
   );

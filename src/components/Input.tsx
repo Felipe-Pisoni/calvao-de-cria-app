@@ -25,7 +25,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
       ref={ref}
       type={type}
       placeholder={placeholder}
-      className={`bg-white w-full py-2 border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+      className={`bg-white text-text1 w-full py-2 border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-textSecondary ${
         icon ? "pl-10" : "pl-3"
       } ${rightIcon ? "pr-10" : "pr-3"}`}
       {...props}

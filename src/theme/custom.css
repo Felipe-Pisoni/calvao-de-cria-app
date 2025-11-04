@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #11b687;
+  --color-secondary: #c69879;
+  --color-background: #efefef;
+  --color-itemsBackground: #ffffff;
+  --color-text1: #1d1d1b;
+  --color-textPrimary: #1d1d1b;
+  --color-textSpecial: #ffcc00;
+  --color-textSecondary: #888888;
+}
+
+@layer base {
+  :root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Força o fundo e texto padrão */
+body,
+ion-app,
+ion-content {
+  --background: #efefef;
+  --color: #1d1d1b;
+}
+
+/* Garante que os componentes Ionic usem as cores corretas */
+ion-toolbar {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+}
+
+ion-content {
+  --background: #efefef;
+}
+
+/* ===== INPUTS E SEARCHBAR ===== */
+ion-searchbar {
+  --background: #ffffff !important;
+  --color: #1d1d1b !important;
+  --placeholder-color: #888888 !important;
+  --icon-color: #888888 !important;
+  --clear-button-color: #888888 !important;
+  --cancel-button-color: #11b687 !important;
+  --box-shadow: none !important;
+}
+
+ion-searchbar .searchbar-input {
+  box-shadow: none !important;
+}
+
+ion-input {
+  --background: #ffffff !important;
+  --color: #1d1d1b !important;
+  --placeholder-color: #888888 !important;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+ion-item {
+  --background: #ffffff !important;
+  --color: #1d1d1b !important;
+  --border-color: #efefef;
+}
+
+/* ===== TOOLBAR ===== */
+ion-toolbar.toolbar-primary,
+ion-header ion-toolbar {
+  --background: #11b687 !important;
+  --color: #ffffff !important;
+}
+
+ion-toolbar.toolbar-white {
+  --background: #ffffff !important;
+  --color: #1d1d1b !important;
+}
+
+/* ===== BUTTONS E BADGES ===== */
+ion-button {
+  --color: #ffffff;
+}
+
+ion-badge[color="danger"] {
+  --background: #ef4444;
+  --color: #ffffff;
+}
+
+/* ===== SEGMENT (ABAS) ===== */
+ion-segment {
+  --background: #ffffff;
+}
+
+ion-segment-button {
+  --color: #888888;
+  --color-checked: #11b687;
+  --indicator-color: #11b687;
+  --indicator-height: 2px;
+}
+
+ion-segment-button::part(native) {
+  color: #888888;
+}
+
+ion-segment-button.segment-button-checked::part(native) {
+  color: #11b687;
+  font-weight: 600;
+}
+
+/* ===== FORÇA CORES DO TAILWIND EM COMPONENTES IONIC ===== */
+ion-page {
+  background: #efefef;
+}
+
+/* Garante que badges e botões usem as cores Tailwind */
+.ion-color-primary {
+  --ion-color-base: #11b687 !important;
+  --ion-color-contrast: #ffffff !important;
+}
+
+.ion-color-secondary {
+  --ion-color-base: #c69879 !important;
+  --ion-color-contrast: #ffffff !important;
+}
+
+/* Utility classes */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+button {
+  cursor: pointer;
+}

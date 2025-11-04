@@ -1,6 +1,7 @@
+import { IonButton } from "@ionic/react";
 import { Link } from "react-router-dom";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLIonButtonElement> {
   children: React.ReactNode;
   onClick?: () => void;
   variant?: "primary" | "secondary" | "outline";
@@ -26,15 +27,14 @@ export const Button = ({
 
   const baseClasses =
     "w-full flex items-center justify-center text-center rounded-md transition-opacity duration-200 hover:opacity-90";
-  const variants = {
-    primary: "bg-primary text-white",
-    secondary: "bg-secondary text-white",
-    outline: "bg-transparent text-secondary border border-secondary",
-  };
+  
+//   const variants = {
+//     primary: "bg-primary text-white",
+//     secondary: "bg-secondary text-white",
+//     outline: "bg-transparent text-secondary border border-secondary",
+//   };
 
-  const combinedClasses = `${baseClasses} ${sizeClasses[size]} ${
-    variants[variant]
-  } ${className || ""}`.trim();
+  const combinedClasses = `${baseClasses} ${sizeClasses[size]} ${className || ""}`.trim();
 
   if (href) {
     return (
@@ -45,8 +45,8 @@ export const Button = ({
   }
 
   return (
-    <button onClick={onClick} className={combinedClasses} {...props}>
+    <IonButton onClick={onClick} className={combinedClasses}  {...props}>
       {children}
-    </button>
+    </IonButton>
   );
 };

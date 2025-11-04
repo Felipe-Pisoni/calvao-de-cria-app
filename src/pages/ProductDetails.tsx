@@ -1,18 +1,33 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButtons,
+  IonBackButton,
+  IonSpinner,
+  IonBadge,
+  IonButton,
+  IonIcon,
+  IonText,
+} from "@ionic/react";
+import { star } from "ionicons/icons";
 import { productService } from "../services/productService";
-import { Button } from "../components/Button";
 import { QuantityAddButton } from "../components/QuantityAddButton";
 import { useCart } from "../contexts/CartContext";
 import type { Product } from "../types";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const history = useHistory();
   const { addToCart } = useCart();
-  const {isAuthenticated} = useAuth();
-  
+  const { isAuthenticated } = useAuth();
+
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +38,7 @@ export const ProductDetailsPage = () => {
   // Carregar produto por ID
   useEffect(() => {
     if (!id) return;
-    
+
     const loadProduct = async () => {
       setIsLoading(true);
       setError(null);
@@ -31,8 +46,8 @@ export const ProductDetailsPage = () => {
         const productData = await productService.getProductById(id);
         setProduct(productData);
       } catch (error) {
-        console.error('Erro ao carregar produto:', error);
-        setError('Erro ao carregar produto');
+        console.error("Erro ao carregar produto:", error);
+        setError("Erro ao carregar produto");
       } finally {
         setIsLoading(false);
       }
@@ -44,37 +59,63 @@ export const ProductDetailsPage = () => {
   // Estados de loading e erro
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-pulse mb-4">
-            <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto"></div>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar className="toolbar-primary">
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
+            <IonTitle>Produto</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding bg-background">
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <IonSpinner name="crescent" className="mb-4" />
+              <p className="text-textSecondary">Carregando produto...</p>
+            </div>
           </div>
-          <p className="text-textSecondary">Carregando produto...</p>
-        </div>
-      </div>
+        </IonContent>
+      </IonPage>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-text1 mb-4">
-            {error || 'Produto não encontrado'}
-          </h2>
-          <Button onClick={() => navigate("/")}>Voltar para Home</Button>
-        </div>
-      </div>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar className="toolbar-primary">
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
+            <IonTitle>Erro</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding bg-background">
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-text1 mb-4">
+                {error || "Produto não encontrado"}
+              </h2>
+              <IonButton onClick={() => history.push("/")} color="primary">
+                Voltar para Home
+              </IonButton>
+            </div>
+          </div>
+        </IonContent>
+      </IonPage>
     );
   }
 
-  const productImages = product.images && product.images.length > 0 
-    ? product.images 
-    : [product.mainImage];
+  const productImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : [product.mainImage];
 
-  const currentPrice = product.isPromotionActive && product.promotionalPrice 
-    ? product.promotionalPrice 
-    : product.price;
+  const currentPrice =
+    product.isPromotionActive && product.promotionalPrice
+      ? product.promotionalPrice
+      : product.price;
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = quantity + delta;
@@ -85,17 +126,17 @@ export const ProductDetailsPage = () => {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     setIsAddingToCart(true);
     try {
       await addToCart({
         productId: product.id,
-        quantity: quantity
+        quantity: quantity,
       });
       // Opcional: mostrar feedback de sucesso
-      console.log('Produto adicionado ao carrinho com sucesso!');
+      console.log("Produto adicionado ao carrinho com sucesso!");
     } catch (error) {
-      console.error('Erro ao adicionar produto ao carrinho:', error);
+      console.error("Erro ao adicionar produto ao carrinho:", error);
       // Opcional: mostrar feedback de erro
     } finally {
       setIsAddingToCart(false);
@@ -103,153 +144,180 @@ export const ProductDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <div className="mb-8">
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center text-text-primary hover:text-primary transition-colors font-medium"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Voltar
-          </button>
-        </div>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar className="toolbar-primary">
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" text="Voltar" />
+          </IonButtons>
+          <IonTitle>Detalhes do Produto</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Galeria de Imagens */}
-          <div className="space-y-4">
-            {/* Imagem Principal */}
-            <div className="bg-white rounded-lg p-8 aspect-square flex items-center justify-center shadow-md">
-              <img
-                src={productImages[selectedImageIndex]}
-                alt={product.name}
-                className="max-h-full max-w-full object-contain"
-              />
-            </div>
-
-            {/* Miniaturas */}
-            {productImages.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto">
-                {productImages.map((image: string, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-20 h-20 bg-white rounded-lg p-2 border-2 transition-colors shadow-sm ${
-                      selectedImageIndex === index
-                        ? "border-primary"
-                        : "border-transparent"
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} - ${index + 1}`}
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
-                ))}
+      <IonContent className="ion-padding bg-background">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Galeria de Imagens */}
+            <div className="space-y-4">
+              {/* Imagem Principal */}
+              <div className="bg-white rounded-lg p-8 aspect-square flex items-center justify-center shadow-md">
+                <img
+                  src={productImages[selectedImageIndex]}
+                  alt={product.name}
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
-            )}
-          </div>
 
-          {/* Informações do Produto */}
-          <div className="space-y-8">
-            {/* Nome do Produto */}
-            <h1 className="text-3xl font-bold text-text1 leading-tight">
-              {product.name}
-            </h1>
-
-            {/* Preço */}
-            <div className="space-y-2">
-              {product.isPromotionActive && product.promotionalPrice && (
-                <div className="text-lg font-medium text-textSecondary line-through">
-                  R$ {product.price?.toFixed(2).replace(".", ",")}
+              {/* Miniaturas */}
+              {productImages.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {productImages.map((image: string, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={`shrink-0 w-20 h-20 bg-white rounded-lg p-2 border-2 transition-colors shadow-sm ${
+                        selectedImageIndex === index
+                          ? "border-primary"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} - ${index + 1}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </button>
+                  ))}
                 </div>
               )}
-              <div className="flex items-center gap-4">
-                <div className="text-4xl font-bold text-primary">
-                  R$ {currentPrice?.toFixed(2).replace(".", ",")}
+            </div>
+
+            {/* Informações do Produto */}
+            <div className="space-y-6">
+              {/* Nome do Produto */}
+              <h1 className="text-2xl md:text-3xl font-bold text-text1 leading-tight">
+                {product.name}
+              </h1>
+
+              {/* Preço */}
+              <div className="space-y-2">
+                {product.isPromotionActive && product.promotionalPrice && (
+                  <IonText className="text-base font-medium text-textSecondary line-through">
+                    R$ {product.price?.toFixed(2).replace(".", ",")}
+                  </IonText>
+                )}
+                <div className="flex items-center gap-4 flex-wrap">
+                  <IonText className="text-3xl font-bold text-primary">
+                    R$ {currentPrice?.toFixed(2).replace(".", ",")}
+                  </IonText>
+                  {product.isPromotionActive && product.discountPercentage && (
+                    <IonBadge color="secondary" className="text-sm px-3 py-2">
+                      {product.discountPercentage}% OFF
+                    </IonBadge>
+                  )}
                 </div>
-                {product.isPromotionActive && product.discountPercentage && (
-                  <div className="bg-secondary text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    {product.discountPercentage}% OFF
+              </div>
+
+              {/* Estoque e Avaliação */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <IonText className="text-textSecondary text-sm">
+                    Estoque:
+                  </IonText>
+                  <IonText
+                    className={`font-semibold text-sm ${
+                      product.stockQuantity > 10
+                        ? "text-green-600"
+                        : product.stockQuantity > 0
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {product.stockQuantity > 0
+                      ? `${product.stockQuantity} unidades disponíveis`
+                      : "Fora de estoque"}
+                  </IonText>
+                </div>
+                {product.rating > 0 && (
+                  <div className="flex items-center gap-2">
+                    <IonText className="text-textSecondary text-sm">
+                      Avaliação:
+                    </IonText>
+                    <div className="flex items-center gap-1">
+                      <IonIcon icon={star} className="text-yellow-500" />
+                      <IonText className="font-semibold text-sm">
+                        {product.rating.toFixed(1)}
+                      </IonText>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Descrição do Produto */}
+              <div className="space-y-4">
+                <IonTitle className="text-lg font-semibold text-text1">
+                  Descrição do Produto
+                </IonTitle>
+                <IonText className="text-textSecondary leading-relaxed text-sm">
+                  {product.description ||
+                    "Produto de alta qualidade com excelente custo-benefício. Ideal para quem busca praticidade e eficiência no dia a dia."}
+                </IonText>
+                <div className="flex gap-2 flex-wrap">
+                  {product.category && (
+                    <IonBadge color="light" className="px-3 py-1">
+                      Categoria: {product.category}
+                    </IonBadge>
+                  )}
+                  {product.brand && (
+                    <IonBadge color="light" className="px-3 py-1">
+                      Marca: {product.brand}
+                    </IonBadge>
+                  )}
+                </div>
+              </div>
+
+              {/* Botão Integrado com Quantidade */}
+              <div className="space-y-4 mt-6">
+                {product.stockQuantity > 0 ? (
+                  <>
+                    <QuantityAddButton
+                      quantity={quantity}
+                      onQuantityChange={handleQuantityChange}
+                      onAdd={handleAddToCart}
+                      disabled={isAddingToCart || !isAuthenticated}
+                    />
+                    {!isAuthenticated && (
+                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
+                        <IonText className="text-yellow-700 text-sm">
+                          Faça login para adicionar produtos ao carrinho
+                        </IonText>
+                        <IonButton
+                          size="small"
+                          fill="clear"
+                          color="primary"
+                          onClick={() => history.push("/auth/login")}
+                          className="mt-2"
+                        >
+                          Fazer Login
+                        </IonButton>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
+                    <IonText className="text-red-600 font-semibold">
+                      Produto fora de estoque
+                    </IonText>
+                    <IonText className="text-red-500 text-sm mt-1">
+                      Este produto não está disponível no momento
+                    </IonText>
                   </div>
                 )}
               </div>
             </div>
-
-            {/* Estoque */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-textSecondary">Estoque:</span>
-                <span className={`font-semibold ${
-                  product.stockQuantity > 10 
-                    ? 'text-green-600' 
-                    : product.stockQuantity > 0 
-                    ? 'text-yellow-600' 
-                    : 'text-red-600'
-                }`}>
-                  {product.stockQuantity > 0 
-                    ? `${product.stockQuantity} unidades disponíveis`
-                    : 'Fora de estoque'
-                  }
-                </span>
-              </div>
-              {product.rating > 0 && (
-                <div className="flex items-center gap-2">
-                  <span className="text-textSecondary">Avaliação:</span>
-                  <div className="flex items-center gap-1">
-                    <span className="text-yellow-500">★</span>
-                    <span className="font-semibold">{product.rating.toFixed(1)}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Descrição do Produto */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-text1">
-                Descrição do Produto
-              </h3>
-              <p className="text-textSecondary leading-relaxed">
-                {product.description || "Produto de alta qualidade com excelente custo-benefício. Ideal para quem busca praticidade e eficiência no dia a dia."}
-              </p>
-              {product.category && (
-                <div className="inline-block bg-background px-3 py-1 rounded-full text-sm text-textSecondary">
-                  Categoria: {product.category}
-                </div>
-              )}
-              {product.brand && (
-                <div className="inline-block bg-background px-3 py-1 rounded-full text-sm text-textSecondary ml-2">
-                  Marca: {product.brand}
-                </div>
-              )}
-            </div>
-
-            {/* Botão Integrado com Quantidade */}
-            <div className="space-y-6">
-              {product.stockQuantity > 0 ? (
-                <QuantityAddButton
-                  quantity={quantity}
-                  onQuantityChange={handleQuantityChange}
-                  onAdd={handleAddToCart}
-                  disabled={isAddingToCart || !isAuthenticated}
-                />
-              ) : (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                  <p className="text-red-600 font-semibold">Produto fora de estoque</p>
-                  <p className="text-red-500 text-sm mt-1">
-                    Este produto não está disponível no momento
-                  </p>
-                </div>
-              )}
-            </div>
           </div>
         </div>
-
-      </div>
-    </div>
+      </IonContent>
+    </IonPage>
   );
 };
