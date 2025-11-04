@@ -1,25 +1,23 @@
-'use client'
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import {
   AuthPageWrapper,
   Button,
   FormInput,
   PhoneInput,
   CpfInput,
-} from "../..";
-import { Input, PasswordInput } from "../../Input";
+} from "../components";
+import { Input, PasswordInput } from "../components/Input";
 import { EnvelopeIcon, UserIcon, CalendarIcon } from "@phosphor-icons/react";
-import { useAuth } from "@/libs/contexts/AuthContext";
-import type { RegisterData } from "@/types";
-import { processApiErrors } from "@/libs/utils/apiErrorUtils";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
+import { useAuth } from "../contexts/AuthContext";
+import type { RegisterData } from "../types";
+import { processApiErrors } from "../utils/apiErrorUtils";
+import { Link } from "react-router-dom";
 
 export const SignUpPage = () => {
   const { register: registerUser, isLoading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [error, setError] = useState<string>("");
 
   const {
@@ -49,7 +47,7 @@ export const SignUpPage = () => {
 
     try {
       await registerUser(data);
-      router.push("/"); // Redireciona para home após registro
+      navigate("/"); // Redireciona para home após registro
     } catch (error: any) {
       processApiErrors(error, setFormError, setError, errors);
     }
@@ -61,7 +59,7 @@ export const SignUpPage = () => {
       subtitle={
         <>
           Ou{" "}
-          <Link className="text-primary font-semibold" href="/auth/login">
+          <Link className="text-primary font-semibold" to="/auth/login">
             entrar na conta
           </Link>
         </>

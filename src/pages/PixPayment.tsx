@@ -1,7 +1,6 @@
-'use client'
 import { useState } from "react";
 import { PixLogoIcon } from "@phosphor-icons/react";
-import { Button } from "..";
+import { Button } from "../components";
 
 export const PixPaymentPage = () => {
   const [pixCode] = useState("00020126540014br.gov.bcb.pix0123456789");

@@ -1,8 +1,7 @@
-'use client';
-import { Button } from "../..";
-import { useCheckout } from "@/libs/contexts/CheckoutContext";
+import { Link } from "react-router-dom";
+import { Button } from "../components";
+import { useCheckout } from "../contexts/CheckoutContext";
 import { MapPinAreaIcon, PixLogoIcon } from "@phosphor-icons/react";
-import Link from "next/link";
 
 export const ConfirmationCheckoutPage = () => {
   const { 
@@ -46,12 +45,12 @@ export const ConfirmationCheckoutPage = () => {
         <Card
           title="Endereço de entrega"
           internal={{
-            title: selectedAddress.alias,
+            title: selectedAddress.recipientName,
             description: `${selectedAddress.street}, ${selectedAddress.number}${selectedAddress.complement ? `, ${selectedAddress.complement}` : ''}\n${selectedAddress.neighborhood}, ${selectedAddress.city}/${selectedAddress.state}\nCEP: ${selectedAddress.cep || 'N/A'}\nTelefone: ${selectedAddress.phone || 'N/A'}`,
             icon: <MapPinAreaIcon className="text-primary mt-1 w-6 h-6" />,
             action: (
               <Link
-                href="/checkout"
+                to="/checkout"
                 className="ml-auto text-primary font-semibold text-sm whitespace-nowrap"
                 onClick={() => {}}
               >

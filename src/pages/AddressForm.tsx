@@ -1,27 +1,25 @@
-"use client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, FormInput, CepInputBare, PhoneInputBare } from "../..";
-import { addressService } from "@/libs/services/addressService";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, FormInput, CepInputBare, PhoneInputBare } from "../components";
+import { addressService } from "../services/addressService";
 import {
   removeCepMask,
   removePhoneMask,
   isValidPhone,
-} from "@/libs/utils/maskUtils";
-import { processApiErrors } from "@/libs/utils/apiErrorUtils";
-import type { CreateAddressData } from "@/types";
-import type { AddressData } from "@/libs/services/cepService";
+} from "../utils/maskUtils";
+import { processApiErrors } from "../utils/apiErrorUtils";
+import type { CreateAddressData } from "../types";
+import type { AddressData } from "../services/cepService";
 import { MapPinAreaIcon } from "@phosphor-icons/react";
-import { useCheckout } from "@/libs/contexts/CheckoutContext";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useCheckout } from "../contexts/CheckoutContext";
 
 interface AddressFormData extends CreateAddressData {}
 
 export const AddressFormPage = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { id: addressId } = useParams<{ id: string }>();
-  const { loadAddresses, setSelectedAddressId } = useCheckout();
+  const { loadAddresses } = useCheckout();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
   const [error, setError] = useState<string>("");
@@ -85,7 +83,7 @@ export const AddressFormPage = () => {
     } catch (error) {
       console.error("Erro ao carregar endereço:", error);
       alert("Erro ao carregar endereço");
-      router.push("/checkout/");
+      navigate("/checkout/");
     } finally {
       setIsLoadingAddress(false);
     }
@@ -108,14 +106,13 @@ export const AddressFormPage = () => {
         // Atualiza a lista de endereços
         await loadAddresses();
         // Se for edição, volta para a lista de endereços
-        router.push("/checkout/");
+        navigate("/checkout/");
       } else {
-        const data = await addressService.createAddress(processedData);
-        
-        setSelectedAddressId(data.addressId);
+        await addressService.createAddress(processedData);
+        // Atualiza a lista de endereços
         await loadAddresses();
         // Se for criação, vai para a próxima etapa do checkout
-        router.push("/checkout/confirm");
+        navigate("/checkout/confirm");
       }
     } catch (error: any) {
       processApiErrors(error, setFormError, setError, errors);
@@ -264,7 +261,7 @@ export const AddressFormPage = () => {
             size="small"
             variant="outline"
             type="button"
-            onClick={() => router.push("/checkout/")}
+            onClick={() => navigate("/checkout/")}
           >
             Voltar
           </Button>

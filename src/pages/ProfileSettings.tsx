@@ -1,10 +1,9 @@
-"use client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, FormInput, PhoneInput, PhoneInputBare } from "..";
-import { useProfile } from "@/libs/contexts/ProfileContext";
-import { removePhoneMask, isValidPhone } from "@/libs/utils/maskUtils";
-import type { UpdateUserData } from "../../types";
+import { Button, FormInput, PhoneInput } from "../components";
+import { useProfile } from "../contexts/ProfileContext";
+import { removePhoneMask, isValidPhone } from "../utils/maskUtils";
+import type { UpdateUserData } from "../types";
 
 interface ProfileFormData {
   name: string;
@@ -101,13 +100,13 @@ export const ProfileSettingsPage = () => {
     );
   }
 
-//   if (userError) {
-//     return (
-//       <div className="text-center text-red-500">
-//         <p>{userError}</p>
-//       </div>
-//     );
-//   }
+  if (userError) {
+    return (
+      <div className="text-center text-red-500">
+        <p>{userError}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -118,11 +117,6 @@ export const ProfileSettingsPage = () => {
       {updateSuccess && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
           Dados atualizados com sucesso!
-        </div>
-      )}
-      {userError && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {userError}
         </div>
       )}
 
@@ -169,7 +163,7 @@ export const ProfileSettingsPage = () => {
         <FormInput
           error={errors.phone?.message}
           Input={
-            <PhoneInputBare
+            <PhoneInput
               placeholder="Número de Telefone"
               value={phoneValue || ""}
               onChange={(e) => setValue("phone", e.target.value)}

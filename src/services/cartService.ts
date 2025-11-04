@@ -1,5 +1,5 @@
 import { api } from "../utils/api";
-import type { Cart, AddToCartData, UpdateCartItemData } from "@/types";
+import type { Cart, AddToCartData, UpdateCartItemData } from "../types";
 
 export const cartService = {
   async getCart(): Promise<Cart> {

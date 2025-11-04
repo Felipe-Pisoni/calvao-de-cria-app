@@ -1,12 +1,9 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { Button } from "..";
-import type { CartItem } from "../../types";
+import { useNavigate } from "react-router-dom";
+import { Button } from ".";
+import type { CartItem } from "../types";
 import { XIcon } from "@phosphor-icons/react";
-import { useCart } from "@/libs/contexts/CartContext";
-import { useAuth } from "@/libs/contexts/AuthContext";
-import Link from "next/link";
+import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export const ShoppingCartDrawer = ({
   isOpen,
@@ -15,7 +12,7 @@ export const ShoppingCartDrawer = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { cart, updateCartItem, removeFromCart } = useCart();
   const { isAuthenticated } = useAuth();
 
@@ -30,11 +27,11 @@ export const ShoppingCartDrawer = ({
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      router.push("/auth/login");
+      navigate("/auth/login");
       onClose();
       return;
     }
-    router.push("/checkout");
+    navigate("/checkout");
     onClose();
   };
 
@@ -64,17 +61,10 @@ export const ShoppingCartDrawer = ({
           </div>
           <div className="divide-y divide-textSecondary flex-grow bg-background overflow-y-auto p-4">
             {cartItems.length === 0 ? (
-              isAuthenticated ? (
-                <div className="flex flex-col items-center justify-center h-full text-textSecondary">
-                  <p className="text-lg mb-2">Seu carrinho está vazio</p>
-                  <p className="text-sm">Adicione produtos para continuar</p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-textSecondary">
-                  <p className="text-lg mb-2">Seu carrinho está vazio</p>
-                  <p className="text-sm">Faça <Link className="text-primary underline" href="/auth/login">login</Link> para continuar</p>
-                </div>
-              )
+              <div className="flex flex-col items-center justify-center h-full text-textSecondary">
+                <p className="text-lg mb-2">Seu carrinho está vazio</p>
+                <p className="text-sm">Adicione produtos para continuar</p>
+              </div>
             ) : (
               cartItems.map((item: CartItem) => (
                 <ProductRowItem
@@ -93,7 +83,10 @@ export const ShoppingCartDrawer = ({
                 R$ {total?.toFixed(2).replace(".", ",")}
               </span>
             </div>
-            <Button onClick={handleCheckout} disabled={cartItems.length === 0 || !isAuthenticated} className="w-full">
+            <Button 
+              onClick={handleCheckout} 
+              disabled={cartItems.length === 0}
+            >
               Finalizar
             </Button>
           </div>
@@ -129,13 +122,6 @@ export const ProductRowItem = ({
     await onRemove(item.productId);
   };
 
-  // Calcular desconto
-  const hasDiscount =
-    item.promotionalPrice && item.promotionalPrice < item.price;
-  const discountPercentage = hasDiscount
-    ? Math.round(((item.price - item.promotionalPrice) / item.price) * 100)
-    : 0;
-
   return (
     <div className="text-text1 flex items-center gap-4 mb-4 pb-4">
       <img
@@ -146,24 +132,7 @@ export const ProductRowItem = ({
 
       <div className="flex-grow flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <div className="flex flex-col">
-            <h3 className="text-sm font-medium leading-tight">{item.name}</h3>
-            {hasDiscount && (
-              <div className="flex flex-col gap-1 mt-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-textSecondary line-through">
-                    R$ {item.price?.toFixed(2).replace(".", ",")}
-                  </span>
-                  <span className="text-xs bg-secondary text-white px-1.5 py-0.5 rounded">
-                    -{discountPercentage}%
-                  </span>
-                </div>
-                <span className="text-sm font-medium text-primary">
-                  R$ {item.promotionalPrice?.toFixed(2).replace(".", ",")}
-                </span>
-              </div>
-            )}
-          </div>
+          <h3 className="text-sm font-medium leading-tight">{item.name}</h3>
           <button className="rounded-full" onClick={handleRemove}>
             <XIcon />
           </button>

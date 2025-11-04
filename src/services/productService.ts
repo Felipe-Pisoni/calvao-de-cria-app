@@ -1,5 +1,5 @@
 import { api } from '../utils/api';
-import type { Product, ProductFilters, ProductsResponse } from '@/types';
+import type { Product, ProductFilters, ProductsResponse } from '../types';
 
 export const productService = {
   async getProducts(filters: ProductFilters = {}): Promise<ProductsResponse> {

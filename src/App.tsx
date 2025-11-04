@@ -34,7 +34,7 @@ import "./theme/variables.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { ProductDetailsPage } from "./components/pages/ProductDetails";
-import { HomeContent } from "./components/pages/Home";
+import { Home, HomeContent } from "./components/pages/Home";
 
 setupIonicReact();
 
@@ -45,7 +45,7 @@ const App: React.FC = () => (
         <IonReactRouter>
           <IonRouterOutlet>
             {/* Suas rotas principais vão aqui */}
-            <Route path="/" component={HomeContent} exact={true} />
+            <Route path="/" component={Home} exact={true} />
             <Route path="/product/:id" component={ProductDetailsPage} />
             {/* ...outras rotas... */}
 

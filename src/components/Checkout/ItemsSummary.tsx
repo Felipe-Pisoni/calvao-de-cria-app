@@ -1,13 +1,12 @@
-'use client';
-import { useCart } from "@/libs/contexts/CartContext";
-import { ProductRowItem } from "../Home/ShoppingCartDrawer";
+import { useCart } from "@/contexts/CartContext";
+import { ProductRowItem } from "../ShoppingCartDrawer";
 
 export const ItemsSummary = () => {
   const { cart, updateCartItem, removeFromCart } = useCart();
   const items = cart?.items ?? [];
 
   const total = items.reduce(
-    (acc, item) => acc + item.totalItemPrice,
+    (acc, item) => acc + item.price * item.quantity,
     0
   );
   return (

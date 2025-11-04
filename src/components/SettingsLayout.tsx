@@ -1,12 +1,9 @@
-"use client";
-
-import { ProfileProvider } from "@/libs/contexts/ProfileContext";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { ProfileProvider } from "../contexts/ProfileContext";
 
-const SettingsLayoutContent = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
+const SettingsLayoutContent = () => {
+  const location = useLocation();
 
   const navLinks = [
     { to: "/profile/settings", label: "Meus dados" },
@@ -20,12 +17,13 @@ const SettingsLayoutContent = ({ children }: { children: React.ReactNode }) => {
           {navLinks.map((link) => (
             <Link
               key={link.to}
-              href={link.to}
+              to={link.to}
               className={classNames(
                 "px-4 py-2 rounded-md text-left transition-colors duration-200",
                 {
-                  "bg-primary text-white": pathname === link.to,
-                  "text-text-primary hover:bg-gray-100": pathname !== link.to,
+                  "bg-primary text-white": location.pathname === link.to,
+                  "text-text-primary hover:bg-gray-100":
+                    location.pathname !== link.to,
                 }
               )}
             >
@@ -35,16 +33,16 @@ const SettingsLayoutContent = ({ children }: { children: React.ReactNode }) => {
         </nav>
       </aside>
       <div className="flex-grow bg-items-bg p-6 rounded-lg shadow-md">
-        {children}
+        <Outlet />
       </div>
     </div>
   );
 };
 
-export const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
+export const SettingsLayout = () => {
   return (
     <ProfileProvider>
-      <SettingsLayoutContent>{children}</SettingsLayoutContent>
+      <SettingsLayoutContent />
     </ProfileProvider>
   );
 };

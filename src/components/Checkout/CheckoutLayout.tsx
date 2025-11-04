@@ -1,13 +1,11 @@
+import { Outlet } from "react-router-dom";
+import "react-drawer/lib/react-drawer.css";
 import { CheckoutHeader } from "./CheckoutHeader";
 import { ItemsSummary } from "./ItemsSummary";
-import { CheckoutProvider } from "@/libs/contexts/CheckoutContext";
+import { CheckoutProvider } from "../../contexts/CheckoutContext";
 
 // Wrapper interno que terá acesso ao CartContext
-export const CheckoutLayoutContent = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const CheckoutLayoutContent = () => {
   return (
     <CheckoutProvider>
       <div className="min-h-screen text-text-primary bg-background">
@@ -16,7 +14,9 @@ export const CheckoutLayoutContent = ({
         <main className="h-[calc(100vh-4rem)] overflow-auto flex-1">
           <div className="max-w-7xl mx-auto py-12">
             <div className="flex md:flex-row gap-8 lg:gap-16">
-              <div className="flex-grow">{children}</div>
+              <div className="flex-grow">
+                <Outlet />
+              </div>
               <aside className="w-full md:w-auto">
                 <ItemsSummary />
               </aside>
@@ -26,4 +26,8 @@ export const CheckoutLayoutContent = ({
       </div>
     </CheckoutProvider>
   );
+};
+
+export const CheckoutLayout = () => {
+  return <CheckoutLayoutContent />;
 };

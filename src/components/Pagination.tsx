@@ -1,5 +1,3 @@
-"use client";
-
 import classNames from "classnames";
 import { useMemo } from "react";
 interface PaginationProps {

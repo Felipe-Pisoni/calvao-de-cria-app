@@ -1,6 +1,5 @@
-'use client'
 import { EnvelopeIcon } from "@phosphor-icons/react";
-import { AuthPageWrapper, Button, Input,  } from "../..";
+import { AuthPageWrapper, Button, Input,  } from "../components";
 
 export const ForgotPasswordPage = () => {
   return (

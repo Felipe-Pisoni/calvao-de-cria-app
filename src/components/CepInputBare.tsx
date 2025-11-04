@@ -1,8 +1,6 @@
-"use client";
-
 import { useState, forwardRef } from "react";
 import { IMaskInput } from "react-imask";
-import { cepService, type AddressData } from "@/libs/services/cepService";
+import { cepService, type AddressData } from "../services/cepService";
 
 interface CepInputBareProps {
   value?: string;

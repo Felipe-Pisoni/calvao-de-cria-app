@@ -1,5 +1,5 @@
 import { api } from '../utils/api';
-import type { User, UpdateUserData } from '@/types';
+import type { User, UpdateUserData } from '../types';
 
 export const userService = {
   // Obter dados do perfil do usuário

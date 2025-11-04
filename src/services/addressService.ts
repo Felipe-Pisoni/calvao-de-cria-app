@@ -1,5 +1,5 @@
 import { api } from '../utils/api';
-import type { Address, CreateAddressData, UpdateAddressData } from '@/types';
+import type { Address, CreateAddressData, UpdateAddressData } from '../types';
 
 export const addressService = {
   // Listar todos os endereços do usuário

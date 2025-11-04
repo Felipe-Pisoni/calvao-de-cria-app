@@ -1,4 +1,4 @@
-import { AuthPageWrapper, Button } from "../..";
+import { AuthPageWrapper, Button } from "../components";
 import { PasswordInput } from "@/components/Input";
 
 export const ResetPasswordPage = () => {

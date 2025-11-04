@@ -8,7 +8,7 @@ import type {
   ResetPasswordData,
   User,
   AuthResponseData
-} from '@/types';
+} from '../types';
 
 // Função para configurar o token no header da API
 export const setAuthToken = (token: string | null) => {

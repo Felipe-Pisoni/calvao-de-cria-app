@@ -3,9 +3,9 @@ import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { cookieUtils, AUTH_COOKIE_KEYS, COOKIE_EXPIRY } from "./cookieUtils";
 
 export const api = axios.create({
-    baseURL:
-        process.env.NEXT_PUBLIC_API_URL ||
-        `https://apicalvaodecria-production.up.railway.app/api/v1`,
+  baseURL:
+    import.meta.env.API_URL ||
+    `https://apicalvaodecria-production.up.railway.app/api/v1`,
 });
 
 // Interface para armazenar requisições que falharam
@@ -59,7 +59,7 @@ const refreshAuthToken = async (): Promise<string | null> => {
     
     // Redirecionar para login se estivermos no browser
     if (typeof window !== 'undefined') {
-      window.location.href = '/auth/login';
+      window.location.href = '/login';
     }
     
     return null;

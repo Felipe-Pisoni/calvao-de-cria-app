@@ -1,15 +1,13 @@
-"use client";
-
 import { CreditCardIcon, MapPinAreaIcon } from "@phosphor-icons/react";
+import { useLocation } from "react-router-dom";
 import { LogoIcon } from "../LogoIcon";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export const CheckoutHeader = () => {
-  const pathname = usePathname();
+  const location = useLocation();
 
   const getStep = () => {
-    const path = pathname;
+    const path = location.pathname;
 
     if (
       path.includes("/checkout/payment") ||
@@ -28,7 +26,7 @@ export const CheckoutHeader = () => {
   return (
     <div className=" w-full h-16  bg-primary shadow-md flex gap-4 justify-center items-center">
       <div className="flex relative max-w-7xl w-full items-center gap-4">
-        <Link className="absolute" href="/">
+        <Link className="absolute" to="/">
           <LogoIcon />
         </Link>
         <div className="flex flex-1 justify-center items-center gap-4">

@@ -1,10 +1,10 @@
-"use client";
-
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import "react-drawer/lib/react-drawer.css";
 import { Header } from "./Header";
 import { ShoppingCartDrawer } from "./ShoppingCartDrawer";
 
-const Layout = ({ children }:{children: React.ReactNode}) => {
+const Layout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -24,7 +24,7 @@ const Layout = ({ children }:{children: React.ReactNode}) => {
         {/* Main Content */}
         <main className="h-[calc(100vh-4rem)] overflow-y-auto flex-1">
           <div className="max-w-7xl mx-auto py-12">
-            {children}
+            <Outlet />
           </div>
         </main>
       </div>

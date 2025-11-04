@@ -1,5 +1,5 @@
 import { api } from '../utils/api';
-import type { Order } from '@/types';
+import type { Order } from '../types';
 
 export const ordersService = {
   // Listar pedidos do usuário - baseado na API administrativa

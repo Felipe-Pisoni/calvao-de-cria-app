@@ -1,12 +1,10 @@
-"use client";
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { addressService } from '../services/addressService';
 import { checkoutService, type CheckoutData, type OrderSummary } from '../services/checkoutService';
 import { useCart } from './CartContext';
-import { Address } from '@/types';
-import { useRouter } from 'next/navigation';
+import type { Address } from '../types';
 
 interface CheckoutContextType {
   // Address management
@@ -34,7 +32,6 @@ interface CheckoutContextType {
   
   // Checkout actions
   finalizePurchase: () => Promise<OrderSummary | null>;
-  setSelectedAddressId: (addressId: string | null) => void;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined);
@@ -52,7 +49,7 @@ interface CheckoutProviderProps {
 }
 
 export const CheckoutProvider: React.FC<CheckoutProviderProps> = ({ children }) => {
-const router = useRouter();
+  const navigate = useNavigate();
   const { clearCart } = useCart();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
@@ -74,7 +71,7 @@ const router = useRouter();
       
       // Se não há endereços, redirecionar para criar um novo
       if (addressesData.length === 0) {
-        router.push('/checkout/address/');
+        navigate('/checkout/address/');
         return;
       }
       
@@ -103,7 +100,7 @@ const router = useRouter();
         // Verificar se era o último endereço
         if (addresses.length === 1) {
           // Se era o último endereço, redirecionar para criar um novo
-          router.push('/checkout/address/');
+          navigate('/checkout/address/');
           return;
         }
         
@@ -176,7 +173,6 @@ const router = useRouter();
     isProcessingOrder,
     orderSummary,
     finalizePurchase,
-    setSelectedAddressId
   };
 
   return (

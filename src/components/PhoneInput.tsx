@@ -1,8 +1,6 @@
-"use client";
-
 import { forwardRef } from "react";
 import { IMaskInput } from "react-imask";
-import { PhoneIcon } from "@phosphor-icons/react";
+import { Phone } from "@phosphor-icons/react";
 
 interface PhoneInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -47,7 +45,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     return (
       <div className="relative">
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-          <PhoneIcon size={20} />
+          <Phone size={20} />
         </div>
         <IMaskInput
           {...props}

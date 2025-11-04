@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -38,7 +38,7 @@ export const Button = ({
 
   if (href) {
     return (
-      <Link href={href} className={combinedClasses}>
+      <Link to={href} className={combinedClasses}>
         {children}
       </Link>
     );

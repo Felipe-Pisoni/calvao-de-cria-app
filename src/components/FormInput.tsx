@@ -1,5 +1,3 @@
-"use client";
-
 import React, { forwardRef } from "react";
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

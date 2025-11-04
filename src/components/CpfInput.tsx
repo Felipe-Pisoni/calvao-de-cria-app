@@ -1,5 +1,3 @@
-"use client";
-
 import { forwardRef } from "react";
 import { IMaskInput } from "react-imask";
 import { IdentificationCardIcon } from "@phosphor-icons/react";

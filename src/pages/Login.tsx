@@ -1,17 +1,15 @@
-'use client';
 import { UserIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthPageWrapper, Input, Button, FormInput } from "../..";
-import type { LoginData } from "@/types";
+import { AuthPageWrapper, Input, Button, FormInput } from "../components";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import type { LoginData } from "../types";
 import { PasswordInput } from "@/components/Input";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useAuth } from "@/libs/contexts/AuthContext";
 
 export const LoginPage = () => {
   const { login, isLoading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [error, setError] = useState<string>("");
 
   const {
@@ -30,7 +28,7 @@ export const LoginPage = () => {
 
     try {
       await login(data);
-      router.push("/"); // Redireciona para home após login
+      navigate("/"); // Redireciona para home após login
     } catch (error) {
       console.error("Erro no login:", error);
       setError("Email ou senha incorretos. Tente novamente.");
@@ -86,7 +84,7 @@ export const LoginPage = () => {
 
       <div className="text-center">
         <Link
-          href="/auth/forgot-password"
+          to="/auth/forgot-password"
           className="text-sm text-primary font-semibold cursor-pointer hover:underline"
         >
           Esqueci minha senha
